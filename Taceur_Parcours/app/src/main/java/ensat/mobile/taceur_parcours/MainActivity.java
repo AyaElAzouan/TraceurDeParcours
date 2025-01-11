@@ -2,11 +2,13 @@ package ensat.mobile.taceur_parcours;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
@@ -72,14 +74,30 @@ public class MainActivity extends AppCompatActivity {
 
     // Démarre le suivi de la localisation
     private void startTracking() {
+        // Vérifier si le GPS est activé
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            // Demander à l'utilisateur d'activer le GPS
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(intent);
+            Toast.makeText(this, "Veuillez activer le GPS pour commencer le suivi.", Toast.LENGTH_LONG).show();
+            return; // Arrêter l'exécution de la méthode si le GPS n'est pas activé
+        }
+
+        // Vider la liste des trajets avant de commencer un nouveau suivi
+        trajetList.clear(); // Réinitialiser la liste de trajets
+        updateUI(""); // Mettre à jour l'UI pour indiquer qu'il n'y a pas encore de trajet enregistré
+
+        // Vérifier si l'autorisation de localisation est accordée
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             isTracking = true;
             Toast.makeText(this, "Enregistrement démarré", Toast.LENGTH_SHORT).show();
 
             // Demander les mises à jour de la localisation à l'aide de LocationManager
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, locationListener);
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, locationListener);
         } else {
+            // Si la permission n'est pas accordée, demander la permission
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
     }
