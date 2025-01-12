@@ -1,0 +1,152 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Image d'arrière-plan -->
+    <ImageView
+        android:id="@+id/background_image"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="132dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_empty"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <!-- Texte pour afficher le statut -->
+    <TextView
+        android:id="@+id/status_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lancer mon parcours"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/background_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center"
+        tools:ignore="HardcodedText" />
+
+    <!-- Texte des positions enregistrées -->
+    <TextView
+        android:id="@+id/text_positions"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:background="#EFEFEF"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:overScrollMode="always"
+        android:padding="16dp"
+        android:scrollbars="vertical"
+        android:textColor="#000"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/status_text"
+        tools:ignore="MissingConstraints" />
+
+    <!-- Bouton pour afficher le chemin -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_show_map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Afficher le chemin"
+        android:textColor="@android:color/white"
+        android:backgroundTint="@color/colorPrimary"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/text_positions"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:icon="@drawable/ic_map"
+        app:iconGravity="textStart"
+        app:iconPadding="8dp"
+        android:layout_marginTop="16dp"
+        android:visibility="gone" />
+
+    <!-- Boutons pour démarrer et arrêter (en bas) -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <!-- Bouton Démarrer -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_start"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Démarrer"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/colorPrimary"
+            app:cornerRadius="16dp"
+            app:icon="@drawable/ic_play"
+            app:iconGravity="textStart"
+            android:layout_marginEnd="8dp" />
+
+        <!-- Bouton Arrêter -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_stop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Arrêter"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/colorAccent"
+            app:cornerRadius="16dp"
+            app:icon="@drawable/ic_stop"
+            app:iconGravity="textStart" />
+    </LinearLayout>
+
+    <!-- Section pour les boutons Calculer et Routes enregistrées -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_stop">
+
+        <!-- Bouton Calculer -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_calculate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="Calculer"
+            android:textColor="@android:color/white"
+            app:cornerRadius="16dp"
+            app:icon="@drawable/ic_calculate"
+            app:iconGravity="textStart"
+            android:layout_marginEnd="8dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_show_saved_routes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorAccent"
+            android:text="Routes enregistrées"
+            android:textColor="@android:color/white"
+            app:cornerRadius="16dp"
+            app:icon="@drawable/ic_saved_routes"
+            app:iconGravity="textStart" />
+
+        <!-- Bouton Routes enregistrées -->
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
