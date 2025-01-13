@@ -99,13 +99,13 @@ public class SavedRoutesActivity extends AppCompatActivity {
                 // Définir l'action du bouton "Run"
                 runButton.setOnClickListener(v -> {
                     if (!positionsList.isEmpty()) {
-                    Intent intent = new Intent(SavedRoutesActivity.this, MapsActivity.class);
-                    intent.putStringArrayListExtra("positions", positionsList);
-                   startActivity(intent);
-                } else {
-                   Toast.makeText(SavedRoutesActivity.this, "Aucune position enregistrée", Toast.LENGTH_SHORT).show();
-                }
-                    });
+                        Intent intent = new Intent(SavedRoutesActivity.this, MapsActivity.class);
+                        intent.putStringArrayListExtra("positions", positionsList);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(SavedRoutesActivity.this, "Aucune position enregistrée", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
                 LinearLayout routeLayout = new LinearLayout(this);
                 routeLayout.setOrientation(LinearLayout.VERTICAL);  // Orientation verticale
@@ -137,4 +137,4 @@ public class SavedRoutesActivity extends AppCompatActivity {
 
     }
 
-    }
+}
