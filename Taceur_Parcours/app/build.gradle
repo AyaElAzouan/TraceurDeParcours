@@ -36,6 +36,7 @@ dependencies {
     implementation libs.activity
     implementation libs.constraintlayout
     implementation libs.osmdroid
+    implementation fileTree(dir: 'C:\\Users\\HP\\AppData\\Local\\Android\\Sdk\\platforms\\android-34', include: ['*.aar', '*.jar'], exclude: [])
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core

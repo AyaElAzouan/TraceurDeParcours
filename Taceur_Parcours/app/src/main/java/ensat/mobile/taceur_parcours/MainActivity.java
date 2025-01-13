@@ -19,17 +19,40 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
+/**
 
+ * Cette classe représente l'activité principale de l'application "Traceur de Parcours".
+ * Elle permet à l'utilisateur de :
+ * - Démarrer et arrêter le suivi GPS pour enregistrer les trajets.
+ * - Afficher les trajets enregistrés sur une carte en temps réel ou après enregistrement.
+ * - Calculer la distance totale parcourue et la durée du trajet.
+ * - Sauvegarder les trajets enregistrés dans une base de données.
+ *
+ * Fonctionnalités principales :
+ * - Suivi des positions GPS à intervalles réguliers.
+ * - Affichage des informations sur le trajet, comme la distance et la durée.
+ * - Navigation vers des écrans supplémentaires pour afficher des cartes ou des trajets enregistrés.
+ * - Gestion des permissions d'accès à la localisation.
+ *
+ * Dépendances :
+ * - LocationManager pour le suivi GPS.
+ * - DatabaseHelper pour la gestion des trajets sauvegardés.
+
+ */
 public class MainActivity extends AppCompatActivity {
-
+    // Gestionnaire et écouteur de localisation
     private LocationManager locationManager;
     private LocationListener locationListener;
+    // Indique si le suivi est en cours
     private boolean isTracking = false;
+    // Liste pour stocker les emplacements
     private ArrayList<Location> locationsList = new ArrayList<>();
+    // Composants de l'interface utilisateur
     private Button startButton, stopButton, showMapButton, calculateButton, showSavedRoutesButton,buttonRealtimeMap;
     private TextView positionsTextView;
     private ImageView backgroundImage;
     private TextView statusText;
+    // Variables pour calculer la distance et la durée
     private double totalDistance = 0.0;
     private long startTime = 0;
 
@@ -63,30 +86,31 @@ public class MainActivity extends AppCompatActivity {
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         initializeLocationListener();
-
+        // Gestion du bouton "Démarrer"
         startButton.setOnClickListener(v -> {
             if (isTracking) {
                 stopTracking(); // Arrêter le suivi en cours
                 resetTracking(); // Réinitialiser pour un nouveau suivi
             }
             startTracking(); // Démarrer un nouveau suivi
-            backgroundImage.setImageResource(R.drawable.ic_road); // Remplacez par l'image d'une route
+            backgroundImage.setImageResource(R.drawable.ic_road); // Remplacer par l'image d'une route
             statusText.setText("En cours ...");
             statusText.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
             startButton.setVisibility(View.GONE); // Cacher le bouton Démarrer
             stopButton.setVisibility(View.VISIBLE); // Montrer le bouton Arrêter
         });
-
+        // Gestion du bouton "Arrêter"
         stopButton.setOnClickListener(v -> {
             stopTracking(); // Appel à la méthode d'arrêt du tracking
             // Mise à jour de l'image et du texte
-            backgroundImage.setImageResource(R.drawable.end_trajet); // Remplacez par l'image vide
+            backgroundImage.setImageResource(R.drawable.end_trajet); // Remplacer par l'image vide
             statusText.setText("Trajet terminé !");
             statusText.setTextColor(ContextCompat.getColor(this, android.R.color.darker_gray));
             stopButton.setVisibility(View.GONE); // Cacher le bouton Arrêter
             showMapButton.setVisibility(View.VISIBLE); // Montrer le bouton "Afficher le chemin"
         });
 
+        // Afficher les positions sur une carte
         showMapButton.setOnClickListener(v -> {
             if (!locationsList.isEmpty()) {
                 Intent intent = new Intent(MainActivity.this, MapsActivity.class);
@@ -100,15 +124,16 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Aucune position enregistrée", Toast.LENGTH_SHORT).show();
             }
         });
+        // Calculer la distance et la durée
 
         calculateButton.setOnClickListener(v -> calculateDistanceAndDuration());
-
+        // Afficher les trajets sauvegardés
         showSavedRoutesButton.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, SavedRoutesActivity.class);
             startActivity(intent);
         });
     }
-
+    // Initialisation de l'écouteur de localisation
     private void initializeLocationListener() {
         locationListener = new LocationListener() {
             @Override
@@ -130,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
     }
-
+    // Démarrer le suivi
     private void startTracking() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             isTracking = true;
@@ -147,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
     }
-
+    // Arrêter le suivi
     private void stopTracking() {
         if (isTracking) {
             isTracking = false;
@@ -181,14 +206,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
+    // Réinitialiser le suivi
     private void resetTracking() {
         locationsList.clear();
         totalDistance = 0.0;
         startTime = 0;
         positionsTextView.setText("");
     }
-
+    // Enregistrer une position
     private void saveLocation(double latitude, double longitude) {
         Location location = new Location("dummyprovider");
         location.setLatitude(latitude);
@@ -199,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
         }
         locationsList.add(location);
     }
-
+    // Sauvegarder le parcours dans la base de données
     private void saveRouteToDatabase(double durationMinutes) {
         if (!locationsList.isEmpty()) {
             DatabaseHelper dbHelper = new DatabaseHelper(this);
@@ -216,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
+    // Calculer la distance et la durée
     private void calculateDistanceAndDuration() {
         if (!locationsList.isEmpty()) {
             // Calcul des kilomètres et des mètres
@@ -244,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Aucune position enregistrée pour calculer.", Toast.LENGTH_SHORT).show();
         }
     }
-
+// Gérer les permissions
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {

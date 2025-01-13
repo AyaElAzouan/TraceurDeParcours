@@ -21,6 +21,12 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+/**
+
+ * Cette classe représente une activité qui affiche une liste des parcours sauvegardés dans la base de données SQLite.
+ * Chaque parcours contient des informations telles que la distance, la durée, la date, et les positions GPS.
+
+ */
 
 public class SavedRoutesActivity extends AppCompatActivity {
 
@@ -28,12 +34,15 @@ public class SavedRoutesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_routes);
-
+        // Initialiser la base de données en lecture seule
         DatabaseHelper dbHelper = new DatabaseHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-
+        // Obtenir tous les parcours enregistrés dans la table "parcours"
         Cursor cursor = db.query("parcours", null, null, null, null, null, null);
+        // Récupérer le conteneur principal où les parcours seront affichés
         LinearLayout routesContainer = findViewById(R.id.routes_container);
+
+        // Vérifier si la base contient des données
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 // Lire les données de la base
