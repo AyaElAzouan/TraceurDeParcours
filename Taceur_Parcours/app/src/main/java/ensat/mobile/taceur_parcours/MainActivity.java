@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private LocationListener locationListener;
     private boolean isTracking = false;
     private ArrayList<Location> locationsList = new ArrayList<>();
-    private Button startButton, stopButton, showMapButton, calculateButton, showSavedRoutesButton;
+    private Button startButton, stopButton, showMapButton, calculateButton, showSavedRoutesButton,buttonRealtimeMap;
     private TextView positionsTextView;
     private ImageView backgroundImage;
     private TextView statusText;
@@ -37,6 +38,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_traceur_parcours);
 
+
+// //////////////////////real time activité/////////////////////////////////////////////
+        buttonRealtimeMap = findViewById(R.id.button_realtimemap);
+        buttonRealtimeMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Lancer RealtimeMapActivity
+                Intent intent = new Intent(MainActivity.this, RealTimeMapActivity.class);
+                startActivity(intent);
+            }
+        });
+        ///////////////////////////////////
         // Initialisation des composants de l'interface utilisateur
         startButton = findViewById(R.id.button_start);
         stopButton = findViewById(R.id.button_stop);
@@ -57,9 +70,22 @@ public class MainActivity extends AppCompatActivity {
                 resetTracking(); // Réinitialiser pour un nouveau suivi
             }
             startTracking(); // Démarrer un nouveau suivi
+            backgroundImage.setImageResource(R.drawable.ic_road); // Remplacez par l'image d'une route
+            statusText.setText("En cours ...");
+            statusText.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+            startButton.setVisibility(View.GONE); // Cacher le bouton Démarrer
+            stopButton.setVisibility(View.VISIBLE); // Montrer le bouton Arrêter
         });
 
-        stopButton.setOnClickListener(v -> stopTracking());
+        stopButton.setOnClickListener(v -> {
+            stopTracking(); // Appel à la méthode d'arrêt du tracking
+            // Mise à jour de l'image et du texte
+            backgroundImage.setImageResource(R.drawable.end_trajet); // Remplacez par l'image vide
+            statusText.setText("Trajet terminé !");
+            statusText.setTextColor(ContextCompat.getColor(this, android.R.color.darker_gray));
+            stopButton.setVisibility(View.GONE); // Cacher le bouton Arrêter
+            showMapButton.setVisibility(View.VISIBLE); // Montrer le bouton "Afficher le chemin"
+        });
 
         showMapButton.setOnClickListener(v -> {
             if (!locationsList.isEmpty()) {
@@ -111,6 +137,8 @@ public class MainActivity extends AppCompatActivity {
             locationsList.clear();
             totalDistance = 0.0;
             startTime = System.currentTimeMillis();
+            ////visibilité de real time map
+            buttonRealtimeMap.setVisibility(View.GONE);
             showMapButton.setVisibility(View.GONE);
             Toast.makeText(this, "Enregistrement démarré", Toast.LENGTH_SHORT).show();
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
@@ -141,6 +169,8 @@ public class MainActivity extends AppCompatActivity {
 
             // Affichage des informations
             showMapButton.setVisibility(View.VISIBLE);
+            ////visibilité de real time map
+            buttonRealtimeMap.setVisibility(View.GONE);
             String durationMessage = String.format(
                     "Durée: %d jours, %d heures, %d minutes et %d secondes", // Formatage sans décimales
                     days, hours, minutes, seconds

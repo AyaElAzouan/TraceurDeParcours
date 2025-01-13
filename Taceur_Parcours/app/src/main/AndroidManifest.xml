@@ -11,9 +11,10 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/osm_ic_follow_me_on"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/osm_ic_follow_me_on"
+        android:windowBackground="#3266F4"
         android:supportsRtl="true"
         android:theme="@style/Theme.Taceur_Parcours"
         tools:targetApi="31">
@@ -30,6 +31,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MapsActivity" />
+        <activity android:name=".RealTimeMapActivity" />
     </application>
 
 </manifest>

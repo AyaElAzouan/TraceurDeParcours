@@ -5,12 +5,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <!-- header -->
+    <LinearLayout
+        android:id="@+id/header_layout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:gravity="center_vertical"
+        android:background="#8FA5DE"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+
+        <ImageView
+            android:id="@+id/header_icon"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_map"
+            app:tint="#052080"
+            android:contentDescription="Icône carte"
+            android:layout_marginEnd="8dp" />
+
+        <!-- Texte du titre -->
+        <TextView
+            android:id="@+id/header_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Course Tracker"
+            android:textSize="27sp"
+            android:textColor="#052080"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+
+
     <!-- Image d'arrière-plan -->
     <ImageView
         android:id="@+id/background_image"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_marginTop="132dp"
+        android:layout_marginTop="145dp"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_empty"
         app:layout_constraintEnd_toEndOf="parent"
@@ -74,6 +110,7 @@
 
     <!-- Boutons pour démarrer et arrêter (en bas) -->
     <LinearLayout
+        android:id="@+id/button_container"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -120,7 +157,7 @@
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button_stop">
+        app:layout_constraintTop_toBottomOf="@id/header_layout">
 
         <!-- Bouton Calculer -->
         <com.google.android.material.button.MaterialButton
@@ -135,6 +172,7 @@
             app:iconGravity="textStart"
             android:layout_marginEnd="8dp" />
 
+        <!-- Bouton Routes enregistrées -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_show_saved_routes"
             android:layout_width="wrap_content"
@@ -145,8 +183,26 @@
             app:cornerRadius="16dp"
             app:icon="@drawable/ic_saved_routes"
             app:iconGravity="textStart" />
-
-        <!-- Bouton Routes enregistrées -->
     </LinearLayout>
+
+
+    <!-- Bouton démarrer en temps reel sur carte -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_realtimemap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Démarrer sur une carte"
+        android:textColor="@android:color/white"
+        android:backgroundTint="#FA7B97"
+        app:cornerRadius="16dp"
+        app:icon="@drawable/ic_map"
+        app:iconGravity="textStart"
+        app:layout_constraintBottom_toTopOf="@id/button_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="16dp"
+        tools:ignore="UnknownId" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
